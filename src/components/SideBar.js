@@ -7,11 +7,18 @@ const SideBar = (props) => {
   const { title, listData } = props;
   return (
     <div className="col-md-4 sidebar">
-      <div className="col-md-12">
-        <div>{title}</div>
+      <div className="col">
+        <div className="sidebarTitle">
+          {title}
+          <div className="mr-auto">
+            <button type="button" className="btn btn-default">
+              <span className="glyphicon glyphicon-addd">Add</span>
+            </button>
+          </div>
+        </div>
         <ul className="list-group">
-          {listData.map(item => (
-            <li className="list-group-item">{item}</li>
+          {listData.map((item, index) => (
+            <li key={index.toString()} className="list-group-item">{item}</li>
           ))}
         </ul>
       </div>

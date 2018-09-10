@@ -6,14 +6,18 @@ import '../../styles/Chat.css';
 const ChatHeader = (props) => {
   const { title, isCollapsed } = props;
   return (
-    <div className="panel-heading" id="accordion">
-      <span className="glyphicon glyphicon-comment" />
-      {title}
-      <div className="btn-group pull-right">
-        <a type="button" className="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-          <span className={`glyphicon ${isCollapsed ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up'}`} />
-        </a>
+    <div className="panel-heading">
+      <div className="panel-control">
+        <div className="btn-group">
+          <button className="btn btn-default" type="button" data-toggle="collapse" data-target="#demo-chat-body">
+            <i className="fa fa-chevron-down" />
+          </button>
+          <button type="button" className="btn btn-default" data-toggle="dropdown">
+            <i className="glyphicon glyphicon-remove-circle" />
+          </button>
+        </div>
       </div>
+      <h3 className="panel-title">{title}</h3>
     </div>
   );
 };

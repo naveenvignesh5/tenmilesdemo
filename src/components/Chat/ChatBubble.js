@@ -8,23 +8,23 @@ const ChatBubble = (props) => {
     text, timeStamp, showTimeStamp, userName, userType,
   } = props;
   return (
-    <li className={`left clearfix ${userType === 'customer'} ? 'customer' : ''`}>
-      <span className="chat-img pull-left">
-        <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" className="img-circle" />
-      </span>
-      <div className="chat-body clearfix">
-        <div className="header">
-          <strong className="primary-font">{userName}</strong>
-          {showTimeStamp
+    <li className="chat-item">
+      <div className={`msj${userType === 'executive' ? '-rta' : ''} macro`}>
+        {userType === 'customer'
           && (
-            <small className="pull-right text-muted">
-              <span className="glyphicon glyphicon-time" />
-              {timeStamp.getMinutes()}
-            </small>)}
+            <div className="avatar">
+              <img alt="" className="img-circle thumbnail" src="http://i.pravatar.cc/150?u=a042581f4e29026704d" />
+            </div>)}
+        <div className={`text text-${userType === 'customer' ? 'l' : 'r'}`}>
+          <p>{userName}</p>
+          <p>{text}</p>
+          {showTimeStamp && <p>{`${timeStamp.getHours()} : ${timeStamp.getMinutes()}`}</p>}
         </div>
-        <p>
-          {text}
-        </p>
+        {userType === 'executive'
+          && (
+            <div className="avatar thumbnailContainer">
+              <img alt="" className="img-circle thumbnail" src="http://i.pravatar.cc/150?u=a042581f4e29026704d" />
+            </div>)}
       </div>
     </li>
   );
