@@ -1,0 +1,14 @@
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+.sidebar {
+  height: 100%;
+  background-color: cornsilk;
+}
+
+.title {
+    
+}
