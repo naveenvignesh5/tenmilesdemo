@@ -24,23 +24,18 @@ const ChatContainer = (props) => {
       ))) : <div>Not Messages yet</div>;
 
   return (
-    <div className="panel-group">
-      <div className="panel panel-default">
-        <button type="button" className="btn btn-danger">Close</button>
-        <div id="#chatBox">
-          <ul className="chat-list">
-            {chatArea}
-          </ul>
-          <div>
-            <div className="msj-rta macro chat-text-input">
-              <div className="text text-r">
-                <input onChange={onInputChange} className="mytext" placeholder="Type a message" />
-              </div>
-              <button className="btn btn-primary" type="button" onClick={onButtonPress}>Send</button>
-            </div>
-          </div>
+    <div id="#chatBox">
+      <ul className="chat-list">
+        {chatArea}
+      </ul>
+      <div className="msj-rta macro chat-text-input">
+        <div className="text text-r">
+          <input onChange={onInputChange} className="mytext" placeholder="Type a message" />
         </div>
       </div>
+      <button className="btn btn-primary" type="button" onClick={() => onButtonPress('send')}>Send</button>
+      <button className="btn btn-danger" type="button" onClick={() => onButtonPress('close')}>Close</button>
+      <button className="btn btn-danger" type="button" onClick={() => onButtonPress('hide')}>Hide Chat</button>
     </div>
   );
 };

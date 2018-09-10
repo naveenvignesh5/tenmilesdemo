@@ -4,24 +4,25 @@ import PropTypes from 'prop-types';
 import '../styles/Sidebar.css';
 
 const SideBar = (props) => {
-  const { title, listData } = props;
+  const {
+    title, listData, onPress, onItemPress
+  } = props;
   return (
-    <div className="col-md-4 sidebar">
-      <div className="col">
-        <div className="sidebarTitle">
-          {title}
-          <div className="mr-auto">
-            <button type="button" className="btn btn-default">
-              <span className="glyphicon glyphicon-addd">Add</span>
-            </button>
-          </div>
-        </div>
-        <ul className="list-group">
-          {listData.map((item, index) => (
-            <li key={index.toString()} className="list-group-item">{item}</li>
-          ))}
-        </ul>
-      </div>
+    <div className="sidebar">
+      <li className="list-group-item active">{title}</li>
+      {/* <ul className="list-group list-group-custom"> */}
+      {listData.length > 0 && listData.map((item, index) => (
+        <li
+          onClick={() => onItemPress(item)}
+          key={index.toString()}
+          className="list-group-item"
+        >
+          {item}
+        </li>
+      ))}
+      <li>
+        <button className="btn btn-secondary" type="button" onClick={onPress}>Add Chat</button>
+      </li>
     </div>
   );
 };
@@ -29,10 +30,14 @@ const SideBar = (props) => {
 SideBar.propTypes = {
   title: PropTypes.string.isRequired,
   listData: PropTypes.array,
+  onPress: PropTypes.func,
+  onItemPress: PropTypes.func,
 };
 
 SideBar.defaultProps = {
   listData: [],
+  onPress: () => {},
+  onItemPress: () => {},
 };
 
 export default SideBar;

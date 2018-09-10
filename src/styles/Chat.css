@@ -37,7 +37,7 @@
 .frame{
     background:#e0e0de;
     height:450px;
-    overflow:hidden;
+    overflow-y: scroll;
     padding:0;
 }
 .frame > div:last-of-type{
@@ -84,6 +84,10 @@ ul {
 
 .thumbnailContainer {
     padding: 0px 0px 0px 10px !important;
+}
+
+.chat-list button {
+  margin: 5px;
 }
 
 .chat-list {
