@@ -101,9 +101,16 @@ ul {
 .chat-text-input {
     margin:auto;
 }
+.chat-ended {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: red;
+    text-align: center;
+    margin: 5px;
+    font-size: 18px;
+}
 input:focus{
     outline: none;
-}        
+}
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: #d4d4d4;
 }

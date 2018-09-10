@@ -6,9 +6,10 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  switch (action.type) {
+  const { payload, type } = action;
+  switch (type) {
   case types.ADD_CHAT_MESSAGE:
-    const { id, message } = action.payload; // eslint-disable-line
+    const { id, message } = payload; // eslint-disable-line
     const chatObj = { ...state.chats }; // eslint-disable-line
 
     if (chatObj[id] && chatObj[id].messages.length > 0) {
@@ -31,8 +32,8 @@ export default (state = initialState, action) => {
     return Object.assign({}, state, { isSending: false });
   case types.ADD_CHAT_REQUEST:
     const newChatObj = { ...state.chats }; // eslint-disable-line
-    newChatObj[action.payload.id] = {
-      id: action.payload.id,
+    newChatObj[payload.id] = {
+      id: payload.id,
       name: `Chat ${Object.keys(newChatObj).length}`,
       messages: [],
       hidden: false,
@@ -41,16 +42,20 @@ export default (state = initialState, action) => {
     return Object.assign({}, state, { chats: newChatObj });
   case types.END_CHAT_REQUEST:
     const obj = { ...state.chats }; // eslint-disable-line
-    obj[action.payload.id].ended = true;
+    obj[payload.id].ended = true;
     return Object.assign({}, state, { chats: obj });
   case types.HIDE_CHAT_REQUEST:
     const hideobj = { ...state.chats }; // eslint-disable-line
-    hideobj[action.payload.id].hidden = true;
+    hideobj[payload.id].hidden = true;
     return Object.assign({}, state, { chats: hideobj });
   case types.REVEAL_CHAT_REQUEST:
     const revealObj = { ...state.chats }; // eslint-disable-line
-    revealObj[action.payload.id].hidden = false;
+    revealObj[payload.id].hidden = false;
     return Object.assign({}, state, { chats: revealObj });
+  case types.CLOSE_CHAT_REQUEST:
+    const closeObj = { ...state.chats }; // eslint-disable-line
+    delete closeObj[payload.id];
+    return Object.assign({}, state, { chats: closeObj });
   default:
     return state;
   }

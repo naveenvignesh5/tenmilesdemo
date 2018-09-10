@@ -44,7 +44,8 @@ class Home extends Component {
   }
 
   onSend = (key) => {
-    if (this.state.currentText) {
+    const chat = this.props.chats[key];
+    if (this.state.currentText && !chat.ended) {
       const message = {
         text: this.state.currentText,
         timeStamp: new Date(),
@@ -62,15 +63,17 @@ class Home extends Component {
     const { chats } = this.props;
     const chat = Object.values(chats).filter(o => o.name === item);
     if (chat.length === 1 && chat[0].hidden) {
-      // console.log(chat[0]);
       this.props.showChat(chat[0].id);
     }
   }
 
   handleChatContainerPress = (type, key) => {
     if (type === 'send') this.onSend(key);
-    else if (type === 'close') this.props.endChat(key);
-    else if (type === 'hide') this.props.hideChat(key);
+    else if (type === 'close') {
+      const chat = this.props.chats[key];
+      if (chat.ended) this.props.closeChat(key);
+      else this.props.endChat(key);
+    } else if (type === 'hide') this.props.hideChat(key);
   }
 
   render() {
@@ -100,6 +103,7 @@ class Home extends Component {
                         onInputChange={this.onTextInputChange}
                         onButtonPress={type => this.handleChatContainerPress(type, key)}
                         chatData={chats[key] ? chats[key].messages : []}
+                        chatEnded={chats[key].ended}
                       />
                     </div>)
                 ))}
@@ -119,6 +123,7 @@ Home.propTypes = {
   addNewChat: PropTypes.func.isRequired,
   hideChat: PropTypes.func.isRequired,
   showChat: PropTypes.func.isRequired,
+  closeChat: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -12,6 +12,7 @@ const ChatContainer = (props) => {
     chatData = [],
     onInputChange,
     onButtonPress,
+    chatEnded,
   } = props;
   const chatArea = chatData.length > 0
     ? (
@@ -27,6 +28,7 @@ const ChatContainer = (props) => {
     <div id="#chatBox">
       <ul className="chat-list">
         {chatArea}
+        {chatEnded && <p className="chat-ended">Chat has ended</p>}
       </ul>
       <div className="msj-rta macro chat-text-input">
         <div className="text text-r">
@@ -44,6 +46,7 @@ ChatContainer.propTypes = {
   chatData: PropTypes.array.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onButtonPress: PropTypes.func.isRequired,
+  chatEnded: PropTypes.bool.isRequired,
 };
 
 export default ChatContainer;
