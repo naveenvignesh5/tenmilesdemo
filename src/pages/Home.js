@@ -71,8 +71,19 @@ class Home extends Component {
     if (type === 'send') this.onSend(key);
     else if (type === 'close') {
       const chat = this.props.chats[key];
-      if (chat.ended) this.props.closeChat(key);
-      else this.props.endChat(key);
+      if (chat.ended) {
+        Swal({
+          title: 'Are you sure you want to discard chat ?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+        }).then((result) => {
+          if (result.value) {
+            this.props.closeChat(key);
+          }
+        });
+      } else this.props.endChat(key);
     } else if (type === 'hide') this.props.hideChat(key);
   }
 

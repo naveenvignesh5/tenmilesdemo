@@ -29,10 +29,6 @@ const revealChatRequest = payload => ({
   payload,
 });
 
-const endChatSuccess = () => ({
-  type: types.END_CHAT_SUCCESS,
-});
-
 const closeChatRequest = payload => ({
   type: types.CLOSE_CHAT_REQUEST,
   payload,
@@ -52,7 +48,6 @@ export const endChat = chatId => (dispatch) => {
   const payload = {
     id: chatId,
   };
-
   dispatch(endChatRequest(payload));
 };
 
