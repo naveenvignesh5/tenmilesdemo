@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import '../styles/Sidebar.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const SideBar = (props) => {
   const {
@@ -9,20 +10,24 @@ const SideBar = (props) => {
   } = props;
   return (
     <div className="sidebar">
-      <li className="list-group-item active">{title}</li>
-      {/* <ul className="list-group list-group-custom"> */}
-      {listData.length > 0 && listData.map((item, index) => (
-        <li
-          onClick={() => onItemPress(item)}
-          key={index.toString()}
-          className="list-group-item"
-        >
-          {item}
-        </li>
-      ))}
-      <li>
-        <button className="btn btn-secondary" type="button" onClick={onPress}>Add Chat</button>
-      </li>
+      <div className="title">{title}</div>
+      <ul className="list-group align-content-start justify-content-start">
+        {listData.length > 0 && listData.map((item, index) => (
+          <li // eslint-disable-line
+            onClick={() => onItemPress(item)}
+            key={index.toString()}
+            className="list-group-item item text"
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
+      <div className="">
+        <button onClick={onPress} className="btn ml-auto" type="button">
+          Add Chat
+          <FontAwesomeIcon className="icon" icon="plus" />
+        </button>
+      </div>
     </div>
   );
 };

@@ -17,8 +17,29 @@ import NavBar from '../components/Navbar';
 import ChatContainer from '../components/Chat/ChatContainer';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.chatRefs = {};
+  }
+
   state = {
     currentText: '',
+    chatsToggled: {},
+  }
+
+  componentDidMount = () => {
+    sessionStorage.setItem('chats', null); // eslint-disable-line no-undef
+    Object.keys(this.chatRefs).forEach(k => this.scrollToBottom(k));
+  }
+
+  componentDidUpdate = () => {
+    Object.keys(this.chatRefs).forEach(k => this.scrollToBottom(k));
+  };
+
+  scrollToBottom = (key) => {
+    if (this.chatRefs[key]) {
+      this.chatRefs[key].canvas.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   onTextInputChange = (event) => {
@@ -27,20 +48,8 @@ class Home extends Component {
     });
   }
 
-  generateRoboMessage = (key) => {
-    const roboMessage = {
-      text: 'dkjfkajfkjkdfj',
-      timeStamp: new Date(),
-      userName: 'abc',
-      userType: 'customer',
-      showTimeStamp: true,
-    };
-    this.props.sendMessage(roboMessage, key);
-  }
-
   addNewChat = (key) => {
     this.props.addNewChat(key);
-    setTimeout(() => this.generateRoboMessage(key), 1000);
   }
 
   onSend = (key) => {
@@ -48,28 +57,19 @@ class Home extends Component {
     if (this.state.currentText && !chat.ended) {
       const message = {
         text: this.state.currentText,
-        timeStamp: new Date(),
+        timeStamp: new Date().toDateString(),
         userName: 'abc',
         userType: 'executive',
         showTimeStamp: true,
       };
 
       this.props.sendMessage(message, key);
-      setTimeout(() => this.generateRoboMessage(key), 1000);
+      this.chatRefs[key].canvas.scrollIntoView();
     }
   }
 
-  handleOnSideBarItemPress = (item) => {
-    const { chats } = this.props;
-    const chat = Object.values(chats).filter(o => o.name === item);
-    if (chat.length === 1 && chat[0].hidden) {
-      this.props.showChat(chat[0].id);
-    }
-  }
-
-  handleChatContainerPress = (type, key) => {
-    if (type === 'send') this.onSend(key);
-    else if (type === 'close') {
+  handleActionPress = (action, index, key) => {
+    if (index === 1) {
       const chat = this.props.chats[key];
       if (chat.ended) {
         Swal({
@@ -83,36 +83,64 @@ class Home extends Component {
             this.props.closeChat(key);
           }
         });
-      } else this.props.endChat(key);
-    } else if (type === 'hide') this.props.hideChat(key);
+      } else {
+        this.props.endChat(key);
+        delete this.chatRefs[key];
+      }
+    } else if (index === 0) this.props.hideChat(key);
+  };
+
+  handleChatToggle = (id, toggled) => {
+    this.setState(prevState => ({
+      chatsToggled: {
+        ...prevState.chatsToggled,
+        [id]: toggled,
+      },
+    }));
+  }
+
+  handleOnSideBarItemPress = (item) => {
+    const { chats } = this.props;
+    const chat = Object.values(chats).filter(o => o.name === item);
+    if (chat.length === 1 && chat[0].hidden) {
+      this.props.showChat(chat[0].id);
+    }
   }
 
   render() {
-    const { chats } = this.props;
+    const { chats, error } = this.props;
     const activeChats = Object.values(chats).map(item => item.name);
     const chatKeys = Object.keys(chats);
     return (
-      <div className="home-container">
+      <Container>
         <NavBar brandTitle="Ten Miles Chat Demo" />
         <Container>
           <div className="row">
-            <div className="col-md-2">
+            <div className="col-md-2 col-xs-3 sidebar-container">
               <SideBar
-                title="Active Chats"
+                title={activeChats.length > 0 ? 'Active Chats' : 'No Chats Available'}
                 listData={activeChats}
                 onPress={() => this.addNewChat(uuidV4())}
                 onItemPress={this.handleOnSideBarItemPress}
               />
             </div>
-            <div className="col-md-10">
-              <div className="row">
-                {chatKeys.map(key => (
+            <div className="col-md-10 col-xs-9">
+              {error && error.message && <div className="error-message">{error.message}</div>}
+              <div className="row chat-container">
+                {chatKeys.map((key, index) => (
                   !chats[key].hidden
                   && (
-                    <div className="col-md-4 col-md-offset-4 frame">
+                    <div className="col-md-2 col-xs-2 chat-wrapper" key={index.toString()}>
                       <ChatContainer
+                        id={key}
+                        ref={(e) => {
+                          this.chatRefs[key] = e;
+                        }}
+                        name={activeChats[index]}
                         onInputChange={this.onTextInputChange}
-                        onButtonPress={type => this.handleChatContainerPress(type, key)}
+                        onButtonPress={() => this.onSend(key)}
+                        actions={['eye-slash', 'times']}
+                        onActionPress={(...p) => this.handleActionPress(...p, key)}
                         chatData={chats[key] ? chats[key].messages : []}
                         chatEnded={chats[key].ended}
                       />
@@ -122,7 +150,7 @@ class Home extends Component {
             </div>
           </div>
         </Container>
-      </div>
+      </Container>
     );
   }
 }
@@ -135,6 +163,7 @@ Home.propTypes = {
   hideChat: PropTypes.func.isRequired,
   showChat: PropTypes.func.isRequired,
   closeChat: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -148,6 +177,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 const mapStateToProps = state => ({
   chats: state.chat.chats,
+  error: state.chat.error,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

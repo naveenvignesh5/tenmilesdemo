@@ -1,10 +1,11 @@
-.navbar {
-  background-color: burlywood;
+.navbar-custom {
+    background-color: aquamarine;
 }
 
-.brandtitle {
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    font-size: 19px;
-    color: '#ffffff';
-    margin: 5px;
+.navbar-brand {
+    letter-spacing: .1em;
+    margin: 10px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
 }
