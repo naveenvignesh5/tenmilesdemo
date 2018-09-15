@@ -17,6 +17,11 @@ import NavBar from '../components/Navbar';
 import ChatContainer from '../components/Chat/ChatContainer';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.chatRefs = {};
+  }
+
   state = {
     currentText: '',
     chatsToggled: {},
@@ -24,11 +29,18 @@ class Home extends Component {
 
   componentDidMount = () => {
     sessionStorage.setItem('chats', null); // eslint-disable-line no-undef
+    Object.keys(this.chatRefs).forEach(k => this.scrollToBottom(k));
   }
 
   componentDidUpdate = () => {
-
+    Object.keys(this.chatRefs).forEach(k => this.scrollToBottom(k));
   };
+
+  scrollToBottom = (key) => {
+    if (this.chatRefs[key]) {
+      this.chatRefs[key].canvas.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 
   onTextInputChange = (event) => {
     this.setState({
@@ -36,20 +48,8 @@ class Home extends Component {
     });
   }
 
-  generateRoboMessage = (key) => {
-    const roboMessage = {
-      text: 'dkjfkajfkjkdfj',
-      timeStamp: new Date(),
-      userName: 'abc',
-      userType: 'customer',
-      showTimeStamp: true,
-    };
-    this.props.sendMessage(roboMessage, key);
-  }
-
   addNewChat = (key) => {
     this.props.addNewChat(key);
-    setTimeout(() => this.generateRoboMessage(key), 1000);
   }
 
   onSend = (key) => {
@@ -64,7 +64,7 @@ class Home extends Component {
       };
 
       this.props.sendMessage(message, key);
-      setTimeout(() => this.generateRoboMessage(key), 1000);
+      this.chatRefs[key].canvas.scrollIntoView();
     }
   }
 
@@ -104,26 +104,6 @@ class Home extends Component {
     }
   }
 
-  handleChatContainerPress = (type, key) => {
-    if (type === 'send') this.onSend(key);
-    else if (type === 'close') {
-      const chat = this.props.chats[key];
-      if (chat.ended) {
-        Swal({
-          title: 'Are you sure you want to discard chat ?',
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
-        }).then((result) => {
-          if (result.value) {
-            this.props.closeChat(key);
-          }
-        });
-      } else this.props.endChat(key);
-    } else if (type === 'hide') this.props.hideChat(key);
-  }
-
   render() {
     const { chats } = this.props;
     const activeChats = Object.values(chats).map(item => item.name);
@@ -135,7 +115,7 @@ class Home extends Component {
           <div className="row">
             <div className="col-md-2 col-xs-3 sidebar-container">
               <SideBar
-                title="Active Chats"
+                title={activeChats.length > 0 ? 'Active Chats' : 'No Chats Available'}
                 listData={activeChats}
                 onPress={() => this.addNewChat(uuidV4())}
                 onItemPress={this.handleOnSideBarItemPress}
@@ -149,6 +129,9 @@ class Home extends Component {
                     <div className="col-md-2 col-xs-2 chat-wrapper" key={index.toString()}>
                       <ChatContainer
                         id={key}
+                        ref={(e) => {
+                          this.chatRefs[key] = e;
+                        }}
                         name={activeChats[index]}
                         onInputChange={this.onTextInputChange}
                         onButtonPress={() => this.onSend(key)}

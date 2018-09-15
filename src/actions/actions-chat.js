@@ -1,3 +1,4 @@
+import loremIpusm from 'lorem-ipsum';
 import * as types from '../constants/actionTypes';
 
 const addMessage = chatPayload => ({
@@ -31,10 +32,27 @@ const closeChatRequest = payload => ({
 });
 
 export const sendMessage = (message, chatId) => (dispatch) => {
-  const chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+  let chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
   chats[chatId].messages.push(message);
   sessionStorage.setItem('chats', JSON.stringify(chats)); // eslint-disable-line no-undef
   dispatch(addMessage(chats));
+  setTimeout(() => {
+    const botMessage = {
+      text: loremIpusm({
+        count: 1,
+        units: 'sentences',
+        format: 'plain',
+      }),
+      timeStamp: new Date().toDateString(),
+      userName: 'abc',
+      userType: 'customer',
+      showTimeStamp: true,
+    };
+    chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+    chats[chatId].messages.push(botMessage);
+    sessionStorage.setItem('chats', JSON.stringify(chats)); // eslint-disable-line no-undef
+    dispatch(addMessage(chats));
+  }, 1000);
 };
 
 export const endChat = chatId => (dispatch) => {
