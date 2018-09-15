@@ -31,6 +31,13 @@ const closeChatRequest = payload => ({
   payload,
 });
 
+const screenLimitException = () => ({
+  type: types.CHAT_SCREEN_LIMIT_ERROR,
+  error: {
+    message: 'Maximum Number of Chat Windows Reached !!!',
+  },
+});
+
 export const sendMessage = (message, chatId) => (dispatch) => {
   let chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
   chats[chatId].messages.push(message);
@@ -38,11 +45,7 @@ export const sendMessage = (message, chatId) => (dispatch) => {
   dispatch(addMessage(chats));
   setTimeout(() => {
     const botMessage = {
-      text: loremIpusm({
-        count: 1,
-        units: 'sentences',
-        format: 'plain',
-      }),
+      text: loremIpusm({ count: 1, units: 'sentences', format: 'plain' }),
       timeStamp: new Date().toDateString(),
       userName: 'abc',
       userType: 'customer',
@@ -64,6 +67,12 @@ export const endChat = chatId => (dispatch) => {
 
 export const addNewChat = chatId => (dispatch) => {
   const chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+
+  const visibleChats = Object.values(chats).filter(chat => !chat.hidden);
+  if (visibleChats.length > 3) {
+    dispatch(screenLimitException());
+    return;
+  }
 
   chats[chatId] = {
     id: chatId,

@@ -83,7 +83,10 @@ class Home extends Component {
             this.props.closeChat(key);
           }
         });
-      } else this.props.endChat(key);
+      } else {
+        this.props.endChat(key);
+        delete this.chatRefs[key];
+      }
     } else if (index === 0) this.props.hideChat(key);
   };
 
@@ -105,7 +108,7 @@ class Home extends Component {
   }
 
   render() {
-    const { chats } = this.props;
+    const { chats, error } = this.props;
     const activeChats = Object.values(chats).map(item => item.name);
     const chatKeys = Object.keys(chats);
     return (
@@ -122,6 +125,7 @@ class Home extends Component {
               />
             </div>
             <div className="col-md-10 col-xs-9">
+              {error && error.message && <div className="error-message">{error.message}</div>}
               <div className="row chat-container">
                 {chatKeys.map((key, index) => (
                   !chats[key].hidden
@@ -159,6 +163,7 @@ Home.propTypes = {
   hideChat: PropTypes.func.isRequired,
   showChat: PropTypes.func.isRequired,
   closeChat: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
