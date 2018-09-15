@@ -8,10 +8,10 @@ const NavBar = (props) => {
     brandTitle,
   } = props;
   return (
-    <nav className="navbar navbar-inverse navbar-fixed-top">
+    <nav className="navbar navbar-default navbar-custom">
       <div className="container-fluid">
         <div className="navbar-header">
-          <p className="navbar-brand brandtitle" href="/">{brandTitle}</p>
+          <p className="navbar-brand">{brandTitle}</p>
         </div>
       </div>
     </nav>

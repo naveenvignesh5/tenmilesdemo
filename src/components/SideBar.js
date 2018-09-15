@@ -9,20 +9,20 @@ const SideBar = (props) => {
   } = props;
   return (
     <div className="sidebar">
-      <li className="list-group-item active">{title}</li>
-      {/* <ul className="list-group list-group-custom"> */}
-      {listData.length > 0 && listData.map((item, index) => (
-        <li
-          onClick={() => onItemPress(item)}
-          key={index.toString()}
-          className="list-group-item"
-        >
-          {item}
-        </li>
-      ))}
-      <li>
-        <button className="btn btn-secondary" type="button" onClick={onPress}>Add Chat</button>
-      </li>
+      <ul className="list-group align-content-start justify-content-start">
+        <li className="list-group-item item text">Chat 1</li>
+        <li className="list-group-item item text">Chat 2</li>
+        <li className="list-group-item item text">Chat 3</li>
+        {listData.length > 0 && listData.map((item, index) => (
+          <li // eslint-disable-line
+            onClick={() => onItemPress(item)}
+            key={index.toString()}
+            className="list-group-item item text"
+          >
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -1,21 +1,25 @@
 .sidebar {
-  /* height: 100%; */
-  /* background-color: cornsilk; */
-  border-color: brown;
-  /* overflow-y: scroll; */
-  /* padding: 10px; */
+  padding: 15px;
 }
 
-.sidebarTitle {
-  font-family: 'Ubuntu', sans-serif;
-  border-bottom-color: cornflowerblue;
-  margin: 5px;
+.sidebar .list-group {
+  /* margin-bottom: 200%; */
 }
 
-.list-group-custom {
-  margin-top: 200px;
+.sidebar .item {
+  background-color: wheat;
+  border-width: 2px;
+  margin-bottom: 10px;
+  border-radius: 25px;
 }
 
-.list-group-item {
-  margin: 5px;
+.sidebar .text {
+  font-family: 'Arvo', serif;
+  font-size: 18px;
+  color: brown;
+  font-weight: 800;
+}
+
+.sidebar .item:hover {
+  background-color: burlywood;
 }

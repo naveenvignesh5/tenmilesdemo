@@ -1,125 +1,167 @@
-.mytext{
-    border:0;padding:10px;background:whitesmoke;
-}
-.text{
-    width:75%;display:flex;flex-direction:column;
-}
-.text > p:first-of-type{
-    width:100%;margin-top:0;margin-bottom:auto;line-height: 13px;font-size: 12px;
-}
-.text > p:last-of-type{
-    width:100%;text-align:right;color:silver;margin-bottom:-7px;margin-top:auto;
-}
-.text-l{
-    float:left;padding-right:10px;
-}        
-.text-r{
-    float:right;padding-left:10px;
-}
-.avatar{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    width:25%;
-    float:left;
-    padding-right:10px;
+/* Collapsible text */
+input[type='checkbox'] {
+    display: none;
 }
 
-.macro{
-    margin-top:5px;width:85%;border-radius:5px;padding:5px;display:flex;
-}
-.msj-rta{
-    float:right;background:whitesmoke;
-}
-.msj{
-    float:left;background:white;
-}
-.frame{
-    background:#e0e0de;
-    height:450px;
-    overflow-y: scroll;
-    padding:0;
-}
-.frame > div:last-of-type{
-    position:absolute;bottom:5px;width:100%;display:flex;
-}
-ul {
-    width:100%;
-    list-style-type: none;
-    padding:18px;
-    position:absolute;
-    bottom:32px;
-    display:flex;
-    flex-direction: column;
+.lbl-toggle {
+  display: block;
+  width: 300px;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  text-align: center;
 
-}
-.msj:before{
-    width: 0;
-    height: 0;
-    content:"";
-    top:-5px;
-    left:-14px;
-    position:relative;
-    border-style: solid;
-    border-width: 0 13px 13px 0;
-    border-color: transparent #ffffff transparent transparent;            
-}
-.msj-rta:after{
-    width: 0;
-    height: 0;
-    content:"";
-    top:-5px;
-    left:14px;
-    position:relative;
-    border-style: solid;
-    border-width: 13px 13px 0 0;
-    border-color: whitesmoke transparent transparent transparent;           
-}  
+  padding: 1rem;
 
-.thumbnail {
-    width: 100%;
-    height: 50px;
-    border-radius: 100px;
+  color: wheat;
+  background: darkblue;
+
+  cursor: pointer;
+
+  border-radius: 7px;
+  transition: all 0.25s ease-out;
 }
 
-.thumbnailContainer {
-    padding: 0px 0px 0px 10px !important;
+.lbl-toggle:hover {
+  color: white;
 }
 
-.chat-list button {
-  margin: 5px;
+/* .lbl-toggle::before {
+  content: ' ';
+  display: inline-block; */
+
+  /* border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid currentColor; */
+
+  /* vertical-align: middle;
+  margin-right: .7rem;
+
+} */
+
+.collapsible-content .content-inner {
+  background: rgba(250, 224, 66, .2);
+  border-bottom: 1px solid rgba(250, 224, 66, .45);
+  height: 100%;
+  /* border-bottom-left-radius: 7px; */
+  /* border-bottom-right-radius: 7px; */
+  padding: .5rem 1rem;
 }
 
-.chat-list {
-  width: 400px;
+.collapsible-content {
+  max-height: 0px;
+  overflow: scroll;
+  overflow-x: hidden;
+  transition: max-height .25s ease-in-out;
+  width: 300px;
 }
 
-.chat-item {
+[id^='input_']:checked + .lbl-toggle + .collapsible-content {
+  max-height: 350px;
+  border-radius: 10px;
+}
+
+/* [id^='input_']:checked + .lbl-toggle::before {
+  transform: rotate(90deg) translateX(-3px);
+} */
+
+[id^='input_']:checked + .lbl-toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.default {
+  text-align: center;
+  color: red;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 600;
+}
+
+.chat-bubble {
+  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.chat-bubble .text {
+  background-color: cornflowerblue;
+  font-family: 'Quicksand', serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 5px;
+  border-radius: 15px;
+}
+
+.chat-bubble .timestamp {
+    color: darkgray;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 70%;
+}
+
+.chat-bubble .username {
+  color: black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: 600;
+}
+
+.chat-bubble.executive .username {
+  text-align: right;
+}
+
+.chat-input-container {
+  margin-top: 5px;
+  position: sticky;
+  padding: 10px;
+  bottom: 0px;
   width: 100%;
+  background-color: lightblue;
 }
 
-.chat-text-input {
-    margin:auto;
+[id^='input_']:checked + .chat-input-container {
+  display: block;
+  max-height: 60px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
 }
-.chat-ended {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    color: red;
-    text-align: center;
-    margin: 5px;
-    font-size: 18px;
+
+.chat-input-container .input {
+  width: 350px;
+  max-height: 40px;
+  font-size: 16px;
+  resize: none;
+  color: black;
+  margin-right: 4px;
 }
-input:focus{
-    outline: none;
+
+.chat-input::-webkit-scrollbar {
+  width: 0px;  /* remove scrollbar space */
+  background: transparent;  /* optional: just make scrollbar invisible */
 }
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-    color: #d4d4d4;
+
+.chat-input-container .btn {
+  height: 40px;
 }
-::-moz-placeholder { /* Firefox 19+ */
-    color: #d4d4d4;
+
+.collapsible-content::-webkit-scrollbar {
+  width: 0px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: transparent;
 }
-:-ms-input-placeholder { /* IE 10+ */
-    color: #d4d4d4;
+
+.collapsible-content::-webkit-scrollbar-track {
+  background-color: transparent;
 }
-:-moz-placeholder { /* Firefox 18- */
-    color: #d4d4d4;
+
+.collapsible-content::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 25px;
+}
+
+.collapsible-content::-webkit-scrollbar-thumb:hover {
+  background-color: slategray;
+  border-radius: 25px;
 }

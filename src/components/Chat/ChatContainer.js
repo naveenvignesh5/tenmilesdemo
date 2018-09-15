@@ -9,6 +9,7 @@ import ChatBubble from './ChatBubble';
 
 const ChatContainer = (props) => {
   const {
+    id,
     chatData = [],
     onInputChange,
     onButtonPress,
@@ -20,32 +21,60 @@ const ChatContainer = (props) => {
         <ChatBubble
           key={index.toString()}
           {...item}
-          showTimeStamp={item.userType === 'executive'}
         />
-      ))) : <div>Not Messages yet</div>;
+      ))) : <div className="default">Not Messages yet</div>;
 
   return (
-    <div id="#chatBox">
-      <ul className="chat-list">
-        {chatArea}
-        {chatEnded && <p className="chat-ended">Chat has ended</p>}
-      </ul>
-      <div className="msj-rta macro chat-text-input">
-        <div className="text text-r">
-          <input onChange={onInputChange} className="mytext" placeholder="Type a message" />
+    <div className="wrap-collapsible">
+      <input
+        id={`input_${id}`}
+        className="toggle"
+        type="checkbox"
+      />
+      <label htmlFor={`input_${id}`} className="lbl-toggle">
+        <div className="d-flex flex-row align-items-center">
+          <p className="align-self-center">Hello World</p>
+          <button type="button" className="btn btn-default ml-auto">X</button>
+        </div>
+      </label>
+      <div className="collapsible-content">
+        <div className="content-inner">
+          <div className="chat-item-container d-flex flex-column align-items-center justify-content-center">
+            {chatArea}
+            {chatEnded && <div className="default">Chat has ended</div>}
+            {/* <div className="align-self-start chat-bubble">
+              <p className="username">ABC</p>
+              <p className="text">Amet laborum occaecat excepteur eu duis.</p>
+            </div>
+            <div className="chat-bubble align-self-end executive">
+              <p className="username">ABC</p>
+              <p className="text">Esse culpa laboris esse sint cupidatat anim dolor minim.</p>
+              <p className="timestamp">7.03 PM</p>
+            </div>
+            <div className="chat-bubble align-self-start">
+              <p className="text">Laboris culpa tempor et Lorem excepteur elit esse aliquip occaecat ex exercitation cupidatat.</p>
+            </div>
+            <div className="chat-bubble align-self-end">
+              <p className="text">Occaecat sint ea in dolore deserunt est irure minim ipsum cillum.</p>
+              <p className="timestamp">7.05 PM</p>
+            </div> */}
+          </div>
+        </div>
+        <div className="d-flex flex-row chat-input-container align-items-center">
+          <textarea className="input" placeholder="Enter a message" />
+          <button className="btn btn-secondary" type="button">Send</button>
         </div>
       </div>
-      <button className="btn btn-primary" type="button" onClick={() => onButtonPress('send')}>Send</button>
-      <button className="btn btn-danger" type="button" onClick={() => onButtonPress('close')}>Close</button>
-      <button className="btn btn-danger" type="button" onClick={() => onButtonPress('hide')}>Hide Chat</button>
     </div>
   );
 };
 
 ChatContainer.propTypes = {
+  id: PropTypes.string.isRequired,
   chatData: PropTypes.array.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onButtonPress: PropTypes.func.isRequired,
+  onChatToggle: PropTypes.func.isRequired,
   chatEnded: PropTypes.bool.isRequired,
 };
 

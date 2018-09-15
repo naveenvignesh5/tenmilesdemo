@@ -5,28 +5,14 @@ import '../../styles/Chat.css';
 
 const ChatBubble = (props) => {
   const {
-    text, timeStamp, showTimeStamp, userName, userType,
+    text, timeStamp, userName, userType,
   } = props;
   return (
-    <li className="chat-item">
-      <div className={`msj${userType === 'executive' ? '-rta' : ''} macro`}>
-        {userType === 'customer'
-          && (
-            <div className="avatar">
-              <img alt="" className="img-circle thumbnail" src="http://i.pravatar.cc/150?u=a042581f4e29026704d" />
-            </div>)}
-        <div className={`text text-${userType === 'customer' ? 'l' : 'r'}`}>
-          <p>{userName}</p>
-          <p>{text}</p>
-          {showTimeStamp && <p>{`${timeStamp.getHours()} : ${timeStamp.getMinutes()}`}</p>}
-        </div>
-        {userType === 'executive'
-          && (
-            <div className="avatar thumbnailContainer">
-              <img alt="" className="img-circle thumbnail" src="http://i.pravatar.cc/150?u=a042581f4e29026704d" />
-            </div>)}
-      </div>
-    </li>
+    <div className={`chat-bubble align-self-${userType === 'customer' ? 'start' : 'end'}`}>
+      <p className={`chat-bubble ${userType}`}>{userName}</p>
+      <p className="text">{text}</p>
+      {userType === 'executive' && <p className="timestamp">{timeStamp}</p>}
+    </div>
   );
 };
 
@@ -34,12 +20,10 @@ ChatBubble.propTypes = {
   text: PropTypes.string.isRequired,
   userName: PropTypes.string.isRequired,
   userType: PropTypes.oneOf(['customer', 'executive']),
-  showTimeStamp: PropTypes.bool,
   timeStamp: PropTypes.string,
 };
 
 ChatBubble.defaultProps = {
-  showTimeStamp: false,
   userType: 'customer',
   timeStamp: '',
 };
