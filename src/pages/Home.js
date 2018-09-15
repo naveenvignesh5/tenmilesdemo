@@ -22,6 +22,14 @@ class Home extends Component {
     chatsToggled: {},
   }
 
+  componentDidMount = () => {
+    sessionStorage.setItem('chats', null); // eslint-disable-line no-undef
+  }
+
+  componentDidUpdate = () => {
+
+  };
+
   onTextInputChange = (event) => {
     this.setState({
       currentText: event.target.value,

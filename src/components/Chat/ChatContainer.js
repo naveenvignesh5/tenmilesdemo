@@ -62,7 +62,6 @@ const ChatContainer = (props) => {
         </div>
         <ChatInput
           placeholder="Enter a message"
-          buttonText="Send"
           onInputChange={onInputChange}
           onButtonPress={onButtonPress}
         />

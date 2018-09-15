@@ -5,10 +5,6 @@ const addMessage = chatPayload => ({
   payload: chatPayload,
 });
 
-const addMessageSuccess = () => ({
-  type: types.ADD_CHAT_MESSAGE_SUCCESS,
-});
-
 const endChatRequest = payload => ({
   type: types.END_CHAT_REQUEST,
   payload,
@@ -35,46 +31,52 @@ const closeChatRequest = payload => ({
 });
 
 export const sendMessage = (message, chatId) => (dispatch) => {
-  const payload = {
-    id: chatId,
-    message,
-  };
-
-  dispatch(addMessage(payload));
-  dispatch(addMessageSuccess());
+  const chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+  chats[chatId].messages.push(message);
+  sessionStorage.setItem('chats', JSON.stringify(chats)); // eslint-disable-line no-undef
+  dispatch(addMessage(chats));
 };
 
 export const endChat = chatId => (dispatch) => {
-  const payload = {
-    id: chatId,
-  };
-  dispatch(endChatRequest(payload));
+  const chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+  chats[chatId].ended = true;
+  sessionStorage.setItem('chats', JSON.stringify(chats)); // eslint-disable-line no-undef
+  dispatch(endChatRequest(chats));
 };
 
 export const addNewChat = chatId => (dispatch) => {
-  const payload = {
+  const chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+
+  chats[chatId] = {
     id: chatId,
+    name: `Chat ${Object.keys(chats).length}`,
+    messages: [],
+    hidden: false,
+    ended: false,
   };
-  dispatch(addChatRequest(payload));
+
+  sessionStorage.setItem('chats', JSON.stringify(chats)); // eslint-disable-line no-undef
+
+  dispatch(addChatRequest(chats));
 };
 
 export const hideChat = chatId => (dispatch) => {
-  const payload = {
-    id: chatId,
-  };
-  dispatch(hideChatRequest(payload));
+  const chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+  chats[chatId].hidden = true;
+  sessionStorage.setItem('chats', JSON.stringify(chats)); // eslint-disable-line no-undef
+  dispatch(hideChatRequest(chats));
 };
 
 export const showChat = chatId => (dispatch) => {
-  const payload = {
-    id: chatId,
-  };
-  dispatch(revealChatRequest(payload));
+  const chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+  chats[chatId].hidden = false;
+  sessionStorage.setItem('chats', JSON.stringify(chats)); // eslint-disable-line no-undef
+  dispatch(revealChatRequest(chats));
 };
 
 export const closeChat = chatId => (dispatch) => {
-  const payload = {
-    id: chatId,
-  };
-  dispatch(closeChatRequest(payload));
+  const chats = JSON.parse(sessionStorage.getItem('chats')) || {}; // eslint-disable-line no-undef
+  delete chats[chatId];
+  sessionStorage.setItem('chats', JSON.stringify(chats)); // eslint-disable-line no-undef
+  dispatch(closeChatRequest(chats));
 };
