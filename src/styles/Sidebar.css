@@ -2,18 +2,20 @@
   padding: 15px;
 }
 
-.sidebar .list-group {
-  /* margin-bottom: 200%; */
+.sidebar .title {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: darkblue;
+  margin-bottom: 4px;
 }
 
 .sidebar .item {
-  background-color: wheat;
-  border-width: 2px;
+  background-color: inherit;
+  border-width: 0px;
   margin-bottom: 10px;
-  border-radius: 25px;
-}
-
-.sidebar .text {
+  border-radius: 10px;
   font-family: 'Arvo', serif;
   font-size: 18px;
   color: brown;
@@ -21,5 +23,26 @@
 }
 
 .sidebar .item:hover {
-  background-color: burlywood;
+  background-color: #3aa8ac;
+  color: white;
+}
+
+.sidebar .btn {
+  background-color: inherit;
+  color: white;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
+  font-weight: 700;
+  font-size: 20px;
+  border-radius: 10px;
+  border-width: 5px;
+  width: 100%;
+}
+
+.sidebar .btn:hover {
+  background-color: #3aa8ac;
+  /* color: brown; */
+}
+
+.sidebar .btn .icon {
+  margin-left: 10px;
 }

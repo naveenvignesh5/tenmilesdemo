@@ -2,20 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import '../../styles/Chat.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ChatInput = (props) => {
-  const { buttonText, placeholder } = props;
+  const {
+    buttonText, placeholder, onInputChange, onButtonPress, buttonIcon,
+  } = props;
   return (
-    <div className="panel-footer">
-      <div className="input-group">
-        <input id="btn-input" type="text" className="form-control input-sm chat_input" placeholder={placeholder} />
-        <span className="input-group-btn">
-          <button className="btn btn-primary btn-sm" id="btn-chat" type="button">
-            <span className="glyphicon glyphicon-send" aria-hidden="true" />
-            {buttonText}
-          </button>
-        </span>
-      </div>
+    <div className="d-flex flex-row chat-input-container align-items-center">
+      <textarea onChange={onInputChange} className="input" placeholder={placeholder} />
+      <button onClick={onButtonPress} className="btn btn-secondary d-flex flex-row align-items-center" type="button">
+        <FontAwesomeIcon icon={buttonIcon} />
+      </button>
     </div>
   );
 };
@@ -23,6 +21,13 @@ const ChatInput = (props) => {
 ChatInput.propTypes = {
   buttonText: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
+  onInputChange: PropTypes.func.isRequired,
+  onButtonPress: PropTypes.func.isRequired,
+  buttonIcon: PropTypes.string,
+};
+
+ChatInput.defaultProps = {
+  buttonIcon: 'location-arrow',
 };
 
 export default ChatInput;

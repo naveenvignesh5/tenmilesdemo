@@ -9,7 +9,7 @@ const ChatBubble = (props) => {
   } = props;
   return (
     <div className={`chat-bubble align-self-${userType === 'customer' ? 'start' : 'end'}`}>
-      <p className={`chat-bubble ${userType}`}>{userName}</p>
+      {userType === 'customer' && <p className="chat-bubble username">{userName}</p>}
       <p className="text">{text}</p>
       {userType === 'executive' && <p className="timestamp">{timeStamp}</p>}
     </div>

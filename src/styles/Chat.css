@@ -27,6 +27,11 @@ input[type='checkbox'] {
   color: white;
 }
 
+.lbl-toggle .btn {
+  background-color: transparent;
+  color: white;
+}
+
 /* .lbl-toggle::before {
   content: ' ';
   display: inline-block; */
@@ -98,13 +103,13 @@ input[type='checkbox'] {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
     font-weight: 700;
-    margin-left: 70%;
+    text-align: right;
 }
 
 .chat-bubble .username {
   color: black;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .chat-bubble.executive .username {
@@ -114,7 +119,7 @@ input[type='checkbox'] {
 .chat-input-container {
   margin-top: 5px;
   position: sticky;
-  padding: 10px;
+  padding: 2px;
   bottom: 0px;
   width: 100%;
   background-color: lightblue;
@@ -130,10 +135,13 @@ input[type='checkbox'] {
 .chat-input-container .input {
   width: 350px;
   max-height: 40px;
-  font-size: 16px;
   resize: none;
   color: black;
   margin-right: 4px;
+  padding: 4px;
+  font-family: 'Arvo', sans-serif;
+  font-size: 14px;
+  border-bottom-left-radius: 10px;
 }
 
 .chat-input::-webkit-scrollbar {
@@ -143,6 +151,11 @@ input[type='checkbox'] {
 
 .chat-input-container .btn {
   height: 40px;
+  border-bottom-right-radius: 10px;
+}
+
+.chat-input-container .btn .icon {
+  margin-right: 5px;
 }
 
 .collapsible-content::-webkit-scrollbar {

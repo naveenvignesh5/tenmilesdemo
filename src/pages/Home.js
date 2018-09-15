@@ -49,7 +49,7 @@ class Home extends Component {
     if (this.state.currentText && !chat.ended) {
       const message = {
         text: this.state.currentText,
-        timeStamp: new Date(),
+        timeStamp: new Date().toDateString(),
         userName: 'abc',
         userType: 'executive',
         showTimeStamp: true,
@@ -60,8 +60,26 @@ class Home extends Component {
     }
   }
 
+  handleActionPress = (action, index, key) => {
+    if (index === 1) {
+      const chat = this.props.chats[key];
+      if (chat.ended) {
+        Swal({
+          title: 'Are you sure you want to discard chat ?',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+        }).then((result) => {
+          if (result.value) {
+            this.props.closeChat(key);
+          }
+        });
+      } else this.props.endChat(key);
+    } else if (index === 0) this.props.hideChat(key);
+  };
+
   handleChatToggle = (id, toggled) => {
-    console.log(id, toggled);
     this.setState(prevState => ({
       chatsToggled: {
         ...prevState.chatsToggled,
@@ -117,57 +135,17 @@ class Home extends Component {
             </div>
             <div className="col-md-10 col-xs-9">
               <div className="row chat-container">
-                <div className="col-md-2 col-xs-2 chat-wrapper">
-                  <ChatContainer
-                    id="1"
-                    onInputChange={this.onTextInputChange}
-                    onChatToggle={this.handleChatToggle}
-                    chatToggled={this.state.chatsToggled['1']}
-                    // onButtonPress={type => this.handleChatContainerPress(type, key)}
-                    // chatData={chats[key] ? chats[key].messages : []}
-                    // chatEnded={chats[key].ended}
-                  />
-                </div>
-                <div className="col-md-2 col-xs-2 chat-wrapper">
-                  <ChatContainer
-                    id="2"
-                    onInputChange={this.onTextInputChange}
-                    chatToggled={this.state.chatsToggled['2']}
-                    onChatToggle={this.handleChatToggle}
-                    // onButtonPress={type => this.handleChatContainerPress(type, key)}
-                    // chatData={chats[key] ? chats[key].messages : []}
-                    // chatEnded={chats[key].ended}
-                  />
-                </div>
-                <div className="col-md-2 col-xs-2 chat-wrapper">
-                  <ChatContainer
-                    id="3"
-                    onInputChange={this.onTextInputChange}
-                    chatToggled={this.state.chatsToggled['3']}
-                    onChatToggle={this.handleChatToggle}
-                    // onButtonPress={type => this.handleChatContainerPress(type, key)}
-                    // chatData={chats[key] ? chats[key].messages : []}
-                    // chatEnded={chats[key].ended}
-                  />
-                </div>
-                <div className="col-md-2 col-xs-2 chat-wrapper">
-                  <ChatContainer
-                    id="4"
-                    onInputChange={this.onTextInputChange}
-                    chatToggled={this.state.chatsToggled['4']}
-                    onChatToggle={this.handleChatToggle}
-                    // onButtonPress={type => this.handleChatContainerPress(type, key)}
-                    // chatData={chats[key] ? chats[key].messages : []}
-                    // chatEnded={chats[key].ended}
-                  />
-                </div>
-                {chatKeys.map(key => (
+                {chatKeys.map((key, index) => (
                   !chats[key].hidden
                   && (
-                    <div className="col-md-4 col-md-offset-4 frame">
+                    <div className="col-md-2 col-xs-2 chat-wrapper" key={index.toString()}>
                       <ChatContainer
+                        id={key}
+                        name={activeChats[index]}
                         onInputChange={this.onTextInputChange}
-                        onButtonPress={type => this.handleChatContainerPress(type, key)}
+                        onButtonPress={() => this.onSend(key)}
+                        actions={['eye-slash', 'times']}
+                        onActionPress={(...p) => this.handleActionPress(...p, key)}
                         chatData={chats[key] ? chats[key].messages : []}
                         chatEnded={chats[key].ended}
                       />
@@ -203,6 +181,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 const mapStateToProps = state => ({
   chats: state.chat.chats,
+  error: state.chat.error,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
